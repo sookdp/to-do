@@ -1,0 +1,111 @@
+/* Styles for TodoApp component */
+#app {
+    max-width: 80vw;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: hsl(0, 0%, 91%);
+    padding: 4vh;
+    box-shadow: 0px 4px 10px #727272c5;
+    margin-top: 5vh;
+}
+
+#app h2 {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#app ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+#app li {
+    margin-bottom: 10px;
+}
+
+#app label {
+    display: flex;
+    align-items: center;
+}
+
+#app input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#app input[type="text"]:focus {
+    border-color: #4caf50;
+}
+
+#app button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#app button:hover {
+    background-color: #45a049;
+}
+
+#app span.done {
+    text-decoration: line-through;
+    color: #999898;
+}
+
+#app h4 {
+    background-color: #45a049;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#app .new-task {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+}
+
+#app .delete {
+    background-color: transparent;
+    color: black;
+}
+
+#app .delete:hover {
+    color: red;
+    background-color: transparent;
+}
+
+#app #done {
+    color: #45a049;
+}
+
+#app #todo {
+    color: chocolate;
+}
+
+#app h3 {
+    color: #626262;
+}
+
+#app #searchbar {
+    margin-top: 2vh;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+#searchbar:focus {
+    border-color: #4caf50;
+}
