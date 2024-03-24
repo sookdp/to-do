@@ -109,3 +109,18 @@
 #searchbar:focus {
     border-color: #4caf50;
 }
+
+img {
+    height: 2vh;
+    width: auto;
+}
+
+#arrows .arrows{
+    background-color: transparent;
+    margin: 0.5vh;
+    padding: 0;
+}
+
+#arrows .arrows:hover{
+    background-color: transparent;
+}
