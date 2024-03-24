@@ -55,7 +55,7 @@
     background-color: #45a049;
 }
 
-#app span.done {
+#app span.isChecked {
     text-decoration: line-through;
     color: #999898;
 }
@@ -146,4 +146,9 @@ img {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+#app #load{
+    margin-top: 2vh;
+    margin-bottom: 1vh;
 }

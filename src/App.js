@@ -5,6 +5,18 @@ import Footer from "./components/Footer";
 import arrowUp from "./img/arrow-up.png";
 import arrowDown from "./img/arrow-down.png";
 
+var tasks = [
+  { id: 1, title: "1. Idée", isChecked: true },
+  { id: 2, title: "2. Marché", isChecked: true },
+  { id: 3, title: "3. Wireframe", isChecked: true },
+  { id: 4, title: "4. Design", isChecked: true },
+  { id: 5, title: "5. Landingpage", isChecked: true },
+  { id: 6, title: "6. Développement", isChecked: false },
+  { id: 7, title: "7. Publish", isChecked: false },
+  { id: 8, title: "8. Pub", isChecked: false },
+  { id: 9, title: "9. Feedback", isChecked: false },
+];
+
 export default function App() {
   const [items, setItems] = useState([]);
 
@@ -13,31 +25,34 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    loadTasksFromLocalStorage();
+  }, []);
+
+  const loadTasksFromLocalStorage = () => {
     const savedTasks = localStorage.getItem('tasks');
     if (savedTasks) {
       setItems(JSON.parse(savedTasks));
     } else {
-      // Initialiser avec des tâches par défaut si aucune tâche n'est trouvée dans le localStorage
-      setItems([
-        { id: 1, title: "1.Idée", isChecked: true },
-        { id: 2, title: "2.Marché", isChecked: true },
-        { id: 3, title: "3.Wireframe", isChecked: true },
-        { id: 4, title: "4.Design", isChecked: true },
-        { id: 5, title: "5.Landingpage", isChecked: true },
-        { id: 6, title: "6.Développement", isChecked: false },
-        { id: 7, title: "7.Publish", isChecked: false },
-        { id: 8, title: "8.Pub", isChecked: false },
-        { id: 9, title: "9.Feedback", isChecked: false },
-      ]);
+      setItems(tasks);
     }
-  }, []);
+  };
+
+
+  const handleLoadDefaultTasks = () => {
+    if (localStorage.getItem('tasks') === null) {
+      setItems(tasks);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    } else {
+      loadTasksFromLocalStorage();
+    }
+  };
 
   function addTask() {
     if (newTask.trim() !== "") {
       const newTaskId = items.length + 1;
-      const newTaskWithTitle = `${newTaskId}.${newTask}`;
+      const newTaskWithTitle = `${newTaskId}. ${newTask}`;
       setItems([...items,
-        { id: newTaskId, title: newTaskWithTitle, done: false },
+        { id: newTaskId, title: newTaskWithTitle, isChecked: false },
       ]);
       setNewTask("");
     }
@@ -46,12 +61,12 @@ export default function App() {
   function handleCheckboxClicked(taskId) {
     const updatedItems = items.map((item) => {
       if (item.id === taskId) {
-        return { ...item, done: !item.done };
+        return { ...item, isChecked: !item.isChecked };
       }
       return item;
     });
     setItems(updatedItems);
-  }
+    }
 
   function handleDelete(taskId) {
     if (window.confirm("Voulez-vous vraiment supprimer la tâche ?")) {
@@ -61,7 +76,10 @@ export default function App() {
   }
 
   function searchTask(event) {
-    setSearchTerm(event.target.value);
+    const searchValue = event.target.value;
+    if (searchValue.length >= 3 || searchValue.length === 0) {
+      setSearchTerm(searchValue);
+    }
   }
 
   const filteredTasks = items.filter((task) =>
@@ -93,8 +111,10 @@ export default function App() {
   return (
       <div id="app">
           <Header itemsCount={items.length}
-                  itemsDone={items.filter((item) => item.done).length}
-                  itemsToDo={items.filter((item) => !item.done).length}/>
+                  itemsChecked={items.filter((item) => item.isChecked).length}
+                  itemsToDo={items.filter((item) => !item.isChecked).length}/>
+        <br/>
+        <button id="load" onClick={handleLoadDefaultTasks}>Charger depuis le LocalStorage</button>
           <ol>
               {filteredTasks.map((item, index) => (
                   <li key={index}>
@@ -105,10 +125,10 @@ export default function App() {
                       </div>
                       <input
                           type="checkbox"
-                          checked={item.done}
+                          checked={item.isChecked}
                           onChange={() => handleCheckboxClicked(item.id)}
                       />
-                      <span className={item.done ? "done" : ""}>{item.title}</span>
+                      <span className={item.isChecked ? "isChecked" : ""}>{item.title}</span>
                       <button className="delete" onClick={() => handleDelete(item.id)}>
                         Supprimer
                       </button>
