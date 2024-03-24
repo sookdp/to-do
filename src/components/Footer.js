@@ -1,6 +1,13 @@
-import React from "react";
+import React, {useRef} from "react";
+import Modal from "./Modal";
 
 export default function Footer({ onSearchKeyUp, newTask, onNewTaskChange, onAddTask }) {
+    const modal = useRef();
+
+    const openConfirmationModal = () => {
+        modal.current.open();
+    };
+
     return (
         <>
             <input
@@ -19,8 +26,12 @@ export default function Footer({ onSearchKeyUp, newTask, onNewTaskChange, onAddT
                         onChange={onNewTaskChange}
                     />
                 </label>
-                <button onClick={onAddTask}>Ajouter</button>
+                <button onClick={openConfirmationModal}>Ajouter</button>
             </div>
+            <Modal  ref={modal} buttonCaption="Oui" onButtonClick={onAddTask}>
+                <h2>Confirmer l'ajout</h2>
+                <p>Êtes-vous sûr de vouloir ajouter cette tâche ?</p>
+            </Modal>
         </>
     );
 }

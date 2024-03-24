@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./styles.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -6,22 +6,38 @@ import arrowUp from "./img/arrow-up.png";
 import arrowDown from "./img/arrow-down.png";
 
 export default function App() {
-  const [items, setItems] = useState([
-    { id: 1, text: "Learn JavaScript", done: false },
-    { id: 2, text: "Learn React", done: false },
-    { id: 3, text: "Play around in CodeSandBox", done: true },
-    { id: 4, text: "Build something awesome", done: true },
-  ]);
+  const [items, setItems] = useState([]);
 
   const [newTask, setNewTask] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+      setItems(JSON.parse(savedTasks));
+    } else {
+      // Initialiser avec des tâches par défaut si aucune tâche n'est trouvée dans le localStorage
+      setItems([
+        { id: 1, title: "1.Idée", isChecked: true },
+        { id: 2, title: "2.Marché", isChecked: true },
+        { id: 3, title: "3.Wireframe", isChecked: true },
+        { id: 4, title: "4.Design", isChecked: true },
+        { id: 5, title: "5.Landingpage", isChecked: true },
+        { id: 6, title: "6.Développement", isChecked: false },
+        { id: 7, title: "7.Publish", isChecked: false },
+        { id: 8, title: "8.Pub", isChecked: false },
+        { id: 9, title: "9.Feedback", isChecked: false },
+      ]);
+    }
+  }, []);
+
   function addTask() {
     if (newTask.trim() !== "") {
-      setItems([
-        { id: items.length + 1, text: newTask, done: false },
-        ...items,
+      const newTaskId = items.length + 1;
+      const newTaskWithTitle = `${newTaskId}.${newTask}`;
+      setItems([...items,
+        { id: newTaskId, title: newTaskWithTitle, done: false },
       ]);
       setNewTask("");
     }
@@ -49,7 +65,7 @@ export default function App() {
   }
 
   const filteredTasks = items.filter((task) =>
-      task.text.toLowerCase().includes(searchTerm.toLowerCase())
+      task.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   function moveTaskUp(index) {
@@ -92,7 +108,7 @@ export default function App() {
                           checked={item.done}
                           onChange={() => handleCheckboxClicked(item.id)}
                       />
-                      <span className={item.done ? "done" : ""}>{item.text}</span>
+                      <span className={item.done ? "done" : ""}>{item.title}</span>
                       <button className="delete" onClick={() => handleDelete(item.id)}>
                         Supprimer
                       </button>
